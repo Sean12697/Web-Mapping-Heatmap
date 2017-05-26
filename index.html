@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Accident heatmap</title>
+    <link rel="stylesheet" href="leaflet.css" />
+   	<script language="javascript"src="leaflet.js"></script>    
+    <script language="javascript" src="accidents.js"></script>
+    <script language="javascript" src="leaflet-heat.js"></script>
+    <script language="javascript">
+	var heat;
+	function init() {
+        var map = L.map('map').setView([53.479159,-2.242726], 15);
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+            maxZoom: 18
+         }).addTo(map);       
+        heat = L.heatLayer(accidentPoints,{
+            radius: 35,
+            blur: 15,
+        });
+		heat.addTo(map);
+	}
+	function updateRadius(newRadius) {
+			newRadius = parseInt(newRadius)
+			heat.setOptions({radius: newRadius});
+	}
+	function updateBlur(newBlur) {
+			newBlur = parseInt(newBlur)
+			heat.setOptions({blur: newBlur});
+	}
+    </script>
+   <style>
+   #map { height: 600px; width: 800px}
+   </style>
+</head>
+<body onLoad="javascript:init();">
+    <div id = "test"><div>
+    <p>Select the radius...
+    <input type="range" min="0" max="60" id="radius" onchange="updateRadius(this.value)" />
+    </p>
+    <p>Select the blur...
+    <input type="range" min="0" max="100" id="blur" onchange="updateBlur(this.value)" />
+    </p>
+    <div id="map"></div>  
+</body>
+</html>
